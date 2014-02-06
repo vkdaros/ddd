@@ -21,28 +21,30 @@ class Die extends Button {
 
     private function onClick(button: Button): Void {
         if (state == "glow") {
-            value = 1;
-            changeTo("black");
+            setFace("black", 1);
         } else if (value < 6) {
             value++;
         } else if (state == "black"){
-            value = 1;
-            changeTo("red");
+            setFace("red", 1);
         } else {
-            value = 0;
-            changeTo("glow");
+            setFace("glow", 0);
         }
     }
 
     private function onOver(button: Button): Void {
         if (visible == false) {
-            changeTo("glow");
+            setFace("glow");
         }
     }
 
-    private function changeTo(newState: String): Void {
-        state = newState;
-        animation.play(newState);
+    public function setFace(?newState: String, newValue: Int = -1): Void {
+        if (newState != null) {
+            state = newState;
+            animation.play(newState);
+        }
+        if (newValue != -1) {
+            value = newValue;
+        }
         visible = true;
     }
 

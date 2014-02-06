@@ -16,7 +16,7 @@ import flixel.system.FlxSound;
 
 class PlayState extends State {
     private var background: FlxSprite;
-    private var dice: Vector<Vector<Button>>;
+    private var dice: Vector<Vector<Die>>;
     private var leftText: FlxText;
     private var rightText: FlxText;
 
@@ -30,6 +30,7 @@ class PlayState extends State {
 
         // Setup board.
         createDiceMatrix();
+        setupBoard();
 
         // Done!!
 		super.create();
@@ -54,6 +55,22 @@ class PlayState extends State {
                 dice[i][j] = new Die(42.5 + j * 45, 42.5 + i * 45);
                 add(dice[i][j]);
                 add(dice[i][j].text);
+            }
+        }
+    }
+
+    private function setupBoard(): Void {
+        for (i in [0, 1, 6, 7]) {
+            var color: String = "red";
+            var value: Int = 1;
+            if (i > 5) {
+                color = "black";
+            }
+            if (i == 0 || i == 7) {
+                value = 2;
+            }
+            for (j in 0...8) {
+                dice[i][j].setFace(color, value);
             }
         }
     }
