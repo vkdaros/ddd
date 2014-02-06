@@ -35,7 +35,7 @@
         <window hardware="true" allow-shaders="true" require-shaders="true"/>
         <window vsync="true" antialiasing="4"/>
     </section>
-	<window orientation="portrait" />
+	<!-- <window orientation="portrait" />
 
     <!-- Set android api level -->
     <android target-sdk-version="10" />

@@ -10,7 +10,7 @@ class Die extends Button {
         value = initialValue;
         lastValue = initialValue;
         state = initialState;
-        super(onClick, onOver, x, y, "die.png", "", 0xffffff, 20,
+        super(onClick, onOver, x, y, "die.png", "", 0xffffff, 18,
               true, false, 45, 45);
 
         animation.add("glow",  [0], 10, false);
@@ -53,7 +53,12 @@ class Die extends Button {
             if (value == 0) {
                 changeText("");
             } else {
+                #if mobile
+                changeText("" + value);
+                #end
+                #if !mobile
                 changeText("   " + value);
+                #end
             }
             lastValue = value;
         }
