@@ -51,15 +51,11 @@ class PlayState extends State {
         }
         for (i in 0...8) {
             for (j in 0...8) {
-                dice[i][j] = new Button(dieOnClick, 42.5 + i * 45,
-                                        42.5 + j * 45, "die.png", " 1");
+                dice[i][j] = new Die(42.5 + j * 45, 42.5 + i * 45);
                 add(dice[i][j]);
+                add(dice[i][j].text);
             }
         }
-    }
-
-    private function dieOnClick() {
-        // Something
     }
 
 	override public function destroy(): Void {

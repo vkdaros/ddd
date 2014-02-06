@@ -26,6 +26,9 @@ class PreLoader extends State {
             "background.png",
             "button.png",
             "die.png",
+            "dieRed.png",
+            "dieBlack.png",
+            "glow.png",
         ];
         soundAssets = [
         ];

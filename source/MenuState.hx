@@ -10,9 +10,9 @@ class MenuState extends State {
     private var buttonPlay: Button;
     private var buttonExit: Button;
 
-	override public function create(): Void {
+    override public function create(): Void {
         Lib.trace("MenuState: update: create");
-		FlxG.cameras.bgColor = 0xff131c1b;
+        FlxG.cameras.bgColor = 0xff131c1b;
 
         var str: String = " Dice Domination Duel";
         var text: FlxText = new FlxText(0, 20, FlxG.width, str);
@@ -23,18 +23,20 @@ class MenuState extends State {
         buttonPlay = new Button(playCallback, 200, 200, "button.png", " Play");
         buttonExit = new Button(exitCallback, 200, 400, "button.png", " Exit");
         add(buttonPlay);
+        add(buttonPlay.text);
         add(buttonExit);
+        add(buttonExit.text);
 
-		super.create();
-	}
+        super.create();
+    }
 
-	override public function destroy(): Void {
-		super.destroy();
-	}
+    override public function destroy(): Void {
+        super.destroy();
+    }
 
-	override public function update(): Void	{
-		super.update();
-	}
+    override public function update(): Void {
+        super.update();
+    }
 
     override public function onBackButton(event: KeyboardEvent): Void {
         // Get ESCAPE from keyboard or BACK from android.
@@ -46,11 +48,11 @@ class MenuState extends State {
         }
     }
 
-    private function playCallback(): Void {
+    private function playCallback(button: Button): Void {
         switchState(new PlayState());
     }
 
-    private function exitCallback(): Void {
+    private function exitCallback(button: Button): Void {
         #if !web
         //event.stopImmediatePropagation();
         System.exit(0);

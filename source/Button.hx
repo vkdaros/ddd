@@ -1,64 +1,67 @@
+import flash.Lib;
+
 import flixel.FlxG;
 import flixel.util.FlxPoint;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup;
 
-class Button extends FlxGroup {
-    private var label: String;
-    private var text: FlxText;
-    private var background: Sprite;
-    private var onClickCallback: Void->Void;
+class Button extends Sprite {
+    public var text: FlxText;
+    private var onClickCallback: Button->Void;
+    private var mouseOverCallback: Button->Void;
 
-    public function new(?callback: Void->Void, X: Float = 0, Y: Float = 0,
-                        _background: String = "", _label: String = "",
-                        color: Int = 0xffffff, size: Int = 30) {
-        super();
+    public function new(?callback: Button->Void, ?overCallback: Button-> Void,
+                        X: Float = 0, Y: Float = 0,
+                        _background: String = "", label: String = "",
+                        color: Int = 0xffffff, size: Int = 30,
+                        animated: Bool = false, reversible: Bool = false,
+                        frameWidth: Int = 0, frameHeight: Int = 0) {
+        super(X, Y, _background, animated, reversible, frameWidth, frameHeight);
 
         onClickCallback = callback;
-        label = _label;
-        background = new Sprite(X, Y, _background);
-        background.setAnchor(background.width / 2, background.height / 2);
+        mouseOverCallback = overCallback;
+        setAnchor(width / 2, height / 2);
 
-        text = new FlxText(X, Y, cast(background.width, Int), label, size);
+        text = new FlxText(X, Y, cast(width, Int), label, size);
         text.color = color;
-        text.x -= background.getAnchor().x;
+        text.x -= getAnchor().x;
         text.y -= text.height / 2 ;
         text.alignment = "center";
-
-        add(background);
-        add(text);
     }
 
-    public function overlapsPoint(point: FlxPoint): Bool {
-        return background.overlapsPoint(point);
+    public function changeText(str: String) {
+        text.text = str;
+        text.draw();
+        text.x = getX() - text.width / 2;
+        text.y = y + (height - text.height) / 2;
     }
 
-    public function setPosition(X: Float = 0, Y: Float = 0): Void {
+    override public function setPosition(X: Float = 0, Y: Float = 0): Void {
+        super.setPosition(X, Y);
+        if (text != null) {
+            text.x = X;
+            text.y = Y;
+        }
+    }
+
+    override public function setX(X: Float): Float {
         text.x = X;
+        return super.setX(X);
+    }
+
+    override public function setY(Y: Float): Float {
         text.y = Y;
-        background.setPosition(X, Y);
+        return super.setY(Y);
     }
 
-    public function getPosition(): FlxPoint {
-        return background.getPosition();
+    override public function kill(): Void {
+        super.kill();
+        text.kill();
     }
 
-    public function setX(X: Float): Float {
-        text.x = X;
-        return background.setX(X);
-    }
-
-    public function getX(): Float {
-        return background.getX();
-    }
-
-    public function setY(Y: Float): Float {
-        text.y = Y;
-        return background.setY(Y);
-    }
-
-    public function getY(): Float {
-        return background.getY();
+    override public function revive(): Void {
+        super.revive();
+        text.revive();
     }
 
     override public function update(): Void {
@@ -67,8 +70,10 @@ class Button extends FlxGroup {
         #if !mobile
         if (FlxG.mouse.justReleased) {
             if (overlapsPoint(FlxG.mouse)) {
-                onClickCallback();
+                onClickCallback(this);
             }
+        } else if (mouseOverCallback != null && overlapsPoint(FlxG.mouse)) {
+            mouseOverCallback(this);
         }
         #end
 
@@ -76,7 +81,7 @@ class Button extends FlxGroup {
         for (touch in FlxG.touches.list) {
             if (touch.justPressed) {
                 if (overlapsPoint(touch)) {
-                    onClickCallback();
+                    onClickCallback(this);
                 }
             }
         }
