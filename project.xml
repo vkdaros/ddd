@@ -31,7 +31,7 @@
     </section>
     <section if="desktop">
         <!-- Fixed size when running in desktop. -->
-        <window width="800" height="600" fps="60"/>
+        <window width="400" height="600" fps="60"/>
         <window hardware="true" allow-shaders="true" require-shaders="true"/>
         <window vsync="true" antialiasing="4"/>
     </section>
